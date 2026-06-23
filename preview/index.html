@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>DailyTask · 移动端 UI 1:1 还原</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 顶部页签 -->
+<nav class="bar">
+  <div class="bar-title"><span class="dot"></span>DailyTask 移动端 UI 预览</div>
+  <button class="bar-tab active" data-page="main">主界面</button>
+  <button class="bar-tab" data-page="settings">设置</button>
+  <button class="bar-tab" data-page="taskConfig">任务配置</button>
+  <button class="bar-tab" data-page="messageChannel">消息渠道</button>
+  <button class="bar-tab" data-page="attendance">考勤记录</button>
+</nav>
+
+<!-- 手机外框 -->
+<div class="phone-wrap">
+  <div class="phone">
+    <div class="phone-screen">
+
+      <!-- 状态栏 -->
+      <div class="status-bar">
+        <span id="sysTime">09:00</span>
+        <span>DailyTask</span>
+      </div>
+
+      <!-- ========== 主界面 MainActivity ========== -->
+      <section class="page active" id="page-main">
+        <div class="page-host">
+          <header class="toolbar">
+            <div class="title-wrap">
+              <div class="title" id="tbTitle">星期二</div>
+              <div class="subtitle" id="tbSubtitle">2026年06月23日 09:00:00</div>
+            </div>
+            <div class="menu">
+              <button class="help-ico" title="工作流说明" data-action="showFlow"><svg viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg></button>
+              <button title="添加任务" data-action="addTask"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
+              <button title="设置" data-action="gotoSettings"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></button>
+            </div>
+          </header>
+
+          <div class="scroll">
+            <div class="repeat-bar" id="repeatBar">--分钟后刷新每日任务</div>
+
+            <div class="card-block" style="margin-bottom:8px">
+              <div class="tips-row">
+                <div class="tips-text empty" id="tipsText">当前未启动任何任务</div>
+                <button class="btn btn-filled" id="execTaskBtn" data-action="execTask">
+                  <span class="btn-ico start"></span><span id="execTaskLabel">启动</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 启动前可视化工作流 -->
+            <div class="workflow" id="workflow">
+              <div class="workflow-h"><span class="q">?</span>点击 <b style="color:var(--theme);margin:0 2px">启动</b> 后,APP 会按以下流程自动执行</div>
+              <div class="flow">
+                <div class="flow-step" data-step="1">
+                  <div class="ico"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg></div>
+                  <div class="t">倒计时</div>
+                </div>
+                <div class="flow-arrow">›</div>
+                <div class="flow-step" data-step="2">
+                  <div class="ico"><svg viewBox="0 0 24 24"><path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm-2 20h-4v-1h4v1zm3.25-3H6.75V4h10.5v14z"/></svg></div>
+                  <div class="t">唤起APP</div>
+                </div>
+                <div class="flow-arrow">›</div>
+                <div class="flow-step" data-step="3">
+                  <div class="ico"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                  <div class="t">自动打卡</div>
+                </div>
+                <div class="flow-arrow">›</div>
+                <div class="flow-step" data-step="4">
+                  <div class="ico"><svg viewBox="0 0 24 24"><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+                  <div class="t">截屏取证</div>
+                </div>
+                <div class="flow-arrow">›</div>
+                <div class="flow-step" data-step="5">
+                  <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div>
+                  <div class="t">推送结果</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="taskList">
+              <!-- 任务卡 1(当前执行) -->
+              <div class="task-card active" data-task-id="1">
+                <div class="task-row">
+                  <div class="left">
+                    <div class="task-label theme">计划时间</div>
+                    <div class="task-time muted">08:30:00</div>
+                  </div>
+                  <button class="arrow-btn"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5v10z"/></svg></button>
+                  <div class="right">
+                    <div class="task-label theme">实际时间</div>
+                    <div class="task-time theme">08:30:42</div>
+                  </div>
+                </div>
+              </div>
+              <div class="task-card" data-task-id="2">
+                <div class="task-row">
+                  <div class="left">
+                    <div class="task-label">计划时间</div>
+                    <div class="task-time">12:00:00</div>
+                  </div>
+                  <button class="arrow-btn"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5v10z"/></svg></button>
+                  <div class="right">
+                    <div class="task-label">实际时间</div>
+                    <div class="task-time muted">--:--:--</div>
+                  </div>
+                </div>
+              </div>
+              <div class="task-card" data-task-id="3">
+                <div class="task-row">
+                  <div class="left">
+                    <div class="task-label">计划时间</div>
+                    <div class="task-time">18:00:00</div>
+                  </div>
+                  <button class="arrow-btn"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5v10z"/></svg></button>
+                  <div class="right">
+                    <div class="task-label">实际时间</div>
+                    <div class="task-time muted">--:--:--</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="empty" id="emptyView" style="display:none">
+              <div class="ic">📋</div>
+              <div class="t">暂无任务，点击右上角 + 添加</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 设置 SettingsActivity ========== -->
+      <section class="page" id="page-settings">
+        <div class="page-host">
+          <header class="toolbar">
+            <button class="nav" data-action="back"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+            <div class="title-wrap"><div class="title">设置</div></div>
+          </header>
+          <div class="scroll">
+            <div class="card-block">
+              <div class="item clickable" data-action="targetApp">
+                <div class="lbl"><div class="t">目标应用</div></div>
+                <div class="val gray">未选择</div>
+                <span class="arrow">›</span>
+              </div>
+              <div class="divider"></div>
+              <div class="item clickable" data-action="msgChannel">
+                <div class="lbl"><div class="t">消息渠道</div></div>
+                <div class="val gray">未配置</div>
+                <span class="arrow">›</span>
+              </div>
+              <div class="divider"></div>
+              <div class="item clickable" data-action="resultSource">
+                <div class="lbl"><div class="t">结果来源</div></div>
+                <div class="val gray">未配置</div>
+                <span class="arrow">›</span>
+              </div>
+              <div class="divider"></div>
+              <div class="item clickable" data-action="taskConfig">
+                <div class="lbl"><div class="t">任务配置</div></div>
+                <span class="arrow">›</span>
+              </div>
+            </div>
+
+            <div class="card-block">
+              <div class="item clickable" data-action="openTest">
+                <div class="lbl"><div class="t">唤起测试</div></div>
+                <span class="arrow">›</span>
+              </div>
+              <div class="divider"></div>
+              <div class="item clickable" data-action="captureTest">
+                <div class="lbl"><div class="t">截屏测试</div></div>
+                <span class="arrow">›</span>
+              </div>
+              <div class="divider"></div>
+              <div class="item clickable" data-action="faq">
+                <div class="lbl"><div class="t">常见问题</div></div>
+                <span class="arrow">›</span>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">当前版本</div></div>
+                <div class="val gray">v1.0.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 任务配置 TaskConfigActivity ========== -->
+      <section class="page" id="page-taskConfig">
+        <div class="page-host">
+          <header class="toolbar">
+            <button class="nav" data-action="back"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+            <div class="title-wrap"><div class="title">任务配置</div></div>
+          </header>
+          <div class="scroll">
+            <div class="card-block">
+              <div class="item clickable" data-action="pickResetTime">
+                <div class="lbl"><div class="t">重置时间</div></div>
+                <div class="val" id="resetTimeVal">05:00</div>
+                <span class="arrow">›</span>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">超时时间</div><div class="sub">超过后自动跳过本任务</div></div>
+                <div class="val" id="timeoutVal">30分钟</div>
+              </div>
+              <div class="divider"></div>
+              <div class="field">
+                <div class="key">任务口令</div>
+                <input class="ipt" id="taskSlogan" placeholder="例如:上班打卡" />
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">跳过休息日</div><div class="sub">节假日 / 周末自动跳过</div></div>
+                <div class="switch" data-switch="skipHoliday"></div>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">节假日数据</div><div class="sub">从本地或网络获取</div></div>
+                <div class="val gray">API</div>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">循环任务</div><div class="sub">打卡成功后再执行一次</div></div>
+                <div class="switch on" data-switch="loopTask"></div>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">随机时间</div><div class="sub">在指定范围内随机开始</div></div>
+                <div class="switch" data-switch="randomTime"></div>
+              </div>
+              <div id="minuteRangeBlock" style="display:none">
+                <div class="divider"></div>
+                <div class="item clickable" data-action="pickRange">
+                  <div class="lbl"><div class="t">时间范围</div></div>
+                  <div class="val" id="rangeVal">5 ~ 10分钟</div>
+                  <span class="arrow">›</span>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="item clickable" data-action="exportConfig">
+                <div class="lbl"><div class="t">导出配置</div></div>
+                <span class="arrow">›</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 消息渠道 MessageChannelActivity ========== -->
+      <section class="page" id="page-messageChannel">
+        <div class="page-host">
+          <header class="toolbar">
+            <button class="nav" data-action="back"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+            <div class="title-wrap"><div class="title">消息渠道</div></div>
+          </header>
+          <div class="scroll">
+            <div class="card-block">
+              <div class="item">
+                <div class="lbl"><div class="t">消息标题</div></div>
+                <input class="ipt" id="msgTitle" value="打卡提醒" />
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">推送开关</div><div class="sub">打卡结果通过此渠道发送</div></div>
+                <div class="switch" data-switch="pushChannel"></div>
+              </div>
+            </div>
+
+            <div class="card-block">
+              <div class="item">
+                <div class="lbl"><div class="t">企业微信</div><div class="sub">群机器人 Webhook 推送</div></div>
+                <div class="switch" data-switch="wechatWork"></div>
+              </div>
+              <div class="divider"></div>
+              <div class="field">
+                <div class="key">Webhook</div>
+                <input class="ipt" id="wechatWebhook" placeholder="https://qyapi.weixin.qq.com/..." />
+              </div>
+            </div>
+
+            <div class="card-block">
+              <div class="item">
+                <div class="lbl"><div class="t">QQ 邮箱</div><div class="sub">打卡结果通过邮件发送</div></div>
+                <div class="switch" data-switch="qqMail"></div>
+              </div>
+              <div class="divider"></div>
+              <div class="field">
+                <div class="key">邮箱地址</div>
+                <input class="ipt" id="qqMailAddr" placeholder="xxx@qq.com" />
+              </div>
+              <div class="divider"></div>
+              <div class="field">
+                <div class="key">授权码</div>
+                <input class="ipt" id="qqMailCode" placeholder="SMTP 授权码" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 考勤记录 AttendanceActivity ========== -->
+      <section class="page" id="page-attendance">
+        <div class="page-host">
+          <header class="toolbar">
+            <button class="nav" data-action="back"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+            <div class="title-wrap"><div class="title">考勤记录</div></div>
+          </header>
+          <div class="scroll">
+            <div class="section-title bold">2026-06-23 (今天)</div>
+            <div class="card-block" style="padding:0">
+              <div class="item">
+                <div class="lbl"><div class="t theme">上班打卡</div><div class="sub">计划 08:30:00</div></div>
+                <div class="val bold theme">08:30:42</div>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">下班打卡</div><div class="sub">计划 18:00:00</div></div>
+                <div class="val gray">未执行</div>
+              </div>
+            </div>
+
+            <div class="section-title">2026-06-22</div>
+            <div class="card-block" style="padding:0">
+              <div class="item">
+                <div class="lbl"><div class="t">上班打卡</div></div>
+                <div class="val">08:31:12</div>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">下班打卡</div></div>
+                <div class="val">18:02:35</div>
+              </div>
+            </div>
+
+            <div class="section-title">2026-06-21</div>
+            <div class="card-block" style="padding:0">
+              <div class="item">
+                <div class="lbl"><div class="t">上班打卡</div></div>
+                <div class="val">08:29:58</div>
+              </div>
+              <div class="divider"></div>
+              <div class="item">
+                <div class="lbl"><div class="t">下班打卡</div></div>
+                <div class="val">18:00:21</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 灭屏遮罩 -->
+      <div class="mask" id="maskView">
+        <div class="mask-time" id="maskClock">09:00</div>
+      </div>
+
+      <!-- 悬浮窗 -->
+      <div class="float" id="floatView">
+        <div class="circle"></div>
+        <div class="sep"></div>
+        <div class="t">30s</div>
+      </div>
+
+      <!-- 工作流说明弹窗 -->
+      <div class="flow-dialog" id="flowDialog">
+        <div class="flow-dialog-c">
+          <div class="flow-dialog-h">
+            <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+            <span>启动后会发生什么?</span>
+          </div>
+          <div class="flow-dialog-b">
+            <div class="flow-row">
+              <div class="flow-num">1</div>
+              <div class="flow-info">
+                <div class="t">倒计时调度</div>
+                <div class="d">AlarmManager 在指定时间唤醒 CountDownTimerService,在悬浮窗实时显示剩余秒数</div>
+                <div class="k">→ CountDownTimerService</div>
+              </div>
+            </div>
+            <div class="flow-row">
+              <div class="flow-num">2</div>
+              <div class="flow-info">
+                <div class="t">唤起目标 APP</div>
+                <div class="d">倒计时归零后,根据"目标应用"配置通过 Intent 拉起打卡 APP,自动跳到打卡页面</div>
+                <div class="k">→ Intent / FloatingWindowService</div>
+              </div>
+            </div>
+            <div class="flow-row">
+              <div class="flow-num">3</div>
+              <div class="flow-info">
+                <div class="t">等待打卡完成</div>
+                <div class="d">监听目标 APP 的"打卡成功"通知,或根据"任务口令"匹配通知内容</div>
+                <div class="k">→ NotificationListenerService</div>
+              </div>
+            </div>
+            <div class="flow-row">
+              <div class="flow-num">4</div>
+              <div class="flow-info">
+                <div class="t">截屏取证</div>
+                <div class="d">通过 MediaProjection 截取打卡结果页,作为打卡成功证据存入本地</div>
+                <div class="k">→ MediaProjectionManager</div>
+              </div>
+            </div>
+            <div class="flow-row">
+              <div class="flow-num">5</div>
+              <div class="flow-info">
+                <div class="t">推送打卡结果</div>
+                <div class="d">将打卡时间、结果、截屏通过"消息渠道"配置推送到企业微信/QQ 邮箱</div>
+                <div class="k">→ MessageDispatcher</div>
+              </div>
+            </div>
+            <div class="flow-row">
+              <div class="flow-num">6</div>
+              <div class="flow-info">
+                <div class="t">重置每日任务</div>
+                <div class="d">到"重置时间"后清空完成状态,进入下一天循环,保证每天自动运行</div>
+                <div class="k">→ TaskResetReceiver</div>
+              </div>
+            </div>
+          </div>
+          <div class="flow-dialog-a"><button class="btn" data-action="closeFlow">我知道了</button></div>
+        </div>
+      </div>
+
+      <!-- 弹窗:使用须知 -->
+      <div class="dialog-mask" id="noticeDialog">
+        <div class="dialog">
+          <div class="dialog-h">使用须知</div>
+          <div class="dialog-b">本软件完全免费!仅供内部使用!严禁商用或者用作其他非法用途!
+近期发现有人在咸鱼私自倒卖本软件,请勿购买!如有购买,请联系卖家退款!</div>
+          <div class="dialog-a"><button class="btn" data-action="closeNotice">知道了</button></div>
+        </div>
+      </div>
+
+      <!-- 弹窗:添加/导入 -->
+      <div class="sheet" id="addSheet">
+        <div class="sheet-c">
+          <button data-action="addTask">添加任务</button>
+          <button data-action="importTask">导入任务</button>
+          <button data-action="closeSheet">取消</button>
+        </div>
+      </div>
+
+      <!-- 时间选择 -->
+      <div class="time-sheet" id="timeSheet">
+        <div class="time-sheet-c">
+          <div class="time-sheet-h">选择时间</div>
+          <div class="time-wheel" id="timeWheel">
+            <div class="col"><div class="time-wheel-track" id="wh"></div></div>
+            <div class="col"><div class="time-wheel-track" id="wm"></div></div>
+          </div>
+          <div class="time-sheet-a">
+            <button class="btn cancel" data-action="closeTimeSheet">取消</button>
+            <button class="btn ok" data-action="confirmTime">确定</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Snackbar -->
+      <div class="snack" id="snack"></div>
+
+    </div><!-- /phone-screen -->
+  </div><!-- /phone -->
+</div><!-- /phone-wrap -->
+
+<p style="font-size:12px;color:#999;margin-top:8px">所有页面均与 Android 端 XML 布局 1:1 还原,无任何自定义皮肤</p>
+
+<script src="app.js"></script>
+</body>
+</html>
